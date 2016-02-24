@@ -1,0 +1,570 @@
+<div>
+  <!-- Part 2 Introduction -->
+  <section>
+    <header>
+      <h1>Introduction</h1>
+    </header>
+    <p>
+      Welcome to part 2 of this 4 part tutorial series going over the JavaScript 
+      framework <b>Backbone</b>. If you haven't already, visit 
+      <a href="backbone-tutorial-part-1.html">Backbone Tutorial Part 1</a> 
+      to get a brief introduction of what Backbone is, what we will be discussing 
+      in each tutorial part, and to get the required files.
+    </p>
+    <p>
+      In this part of the tutorial, we will be going over the basics of 
+      <b>Backbone Views</b> and start implementing various ways of 
+      using views in our application.
+    </p>
+  </section>
+  <!-- Part 2 Introduction -->
+
+  <!-- Part 2 Goals -->
+  <section>
+    <header>
+      <h1>Part 2 Goals</h1>
+    </header>
+    <ul>
+      <li>Learn what backbone views are.</li>
+      <li>Learn how to define a backbone view.</li>
+      <li>Learn about the basic properties of a view.</li>
+      <li>Learn how to incorporate a backbone view to an application.</li>
+      <li>Learn various ways to create view templates.</li>
+    </ul>
+  </section>
+
+  <!-- Tutorial Contents -->
+  <section>
+    <header>
+      <h1>Table of Contents</h1>
+    </header>
+    <ul>
+      <li><a href="#2.1">2.1 What Are Views?</li>
+      <li><a href="#2.2">2.2 Basic View</a></li>
+      <li><a href="#2.3">2.3 Passing Data to View</a></li>
+      <li><a href="#2.4">2.4 Using Templates Outside of View File</a></li>
+      <li><a href="#2.5">2.5 View Summary</a></li>
+    </ul>
+  </section>
+
+  <!-- Section 2.1 - What are Views? -->
+  <section id="2.1">
+    <header>
+      <h1>2.1 What are Views?</h1>
+    </header>
+    <p>
+      Views are one of the most essential parts to <b>Backbone</b>, it allows you to bind events and interactions with the page 
+      and can help separate your application into more managable sections/components.
+    </p>
+    <p>To create a view, you must extend Backbone's View Class as follows:</p>
+    <p><strong>Backbone.View.extend(properties);</strong></p>
+    <p>Where <strong>properties</strong> is a plain object with elements defining your view. Some of the main properties used are:</p>
+    <ul>
+      <li><strong>el</strong>: String (the element to render the view into)</li>
+      <li><strong>template</strong>: String | Function (the template that will be rendered into the view element)</li>
+      <li><strong>render</strong>: Function (how the view will be rendered)</li>
+      <li><strong>events</strong>: PlainObject (jQuery events bound to the view element $el)</li>
+    </ul>
+
+    <div class="fig">
+      <pre><code class="prettyprint">// Define View
+var HomeView = Backbone.View.extend({
+  el: '#view-content',
+
+  events: {
+    'click .my-button': 'onMyButtonClicked'
+  },
+
+  onMyButtonClicked: function(){
+    alert('My Button Was Clicked!');
+  },
+
+  template: '&lt;p&gt;My Html Content&lt;/p&gt;',
+
+  render: function(){
+    var tpl = _.template(this.template);
+    this.$el.html(tpl());
+
+    return this;
+  }
+});
+
+// Created and render view
+var myView = new HomeView();
+
+// renders the view into the element with id 'view-content'
+myView.render();
+</code></pre>
+      <div class="fig-title">Backbone View Example</div>
+    </div>
+    <p>
+      For a list of all view properties, visit 
+      <a href="http://backbonejs.org/#View">http://backbonejs.org/#View</a>
+    </p>
+  </section>
+  <!-- End Section 2.1 What are Views? -->
+
+  <!-- Section 2.2 Basic View -->
+  <section id="2.2">
+    <header>
+      <h1>2.2 Basic View</h1>
+    </header>
+    <p>
+      We will begin by opening <b>root/app/views/home/part-a.js</b> in your 
+      favorite text editor. Once opened, you will notice that there are some 
+      lines code already in place such as in <b>Fig 2.2a</b>.
+    </p>
+    <div class="fig">
+      <img src="images/backbone-tutorial-fig2_2a.jpg">
+      <div class="fig-title">Fig 2.2a (root/app/views/home/part-a.js)</div>
+    </div>
+    <p>
+      If you aren't familiar with <b>RequireJS</b> and/or haven't seen the define style of declaration like in line 13 of <b>Fig 2.2a</b>, 
+      think of it as a way to define/load what files will be used in that particular file that is defining them. 
+      In this example, we are requesting that we want <strong>Underscore</strong> and <strong>Backbone</strong> to be available to be used. 
+      Learning <b>RequireJS</b> is out of the scope for this tutorial, however you can visit 
+      <a href="http://requirejs.org/">http://requirejs.org/</a> for more details on <b>RequireJS</b>.
+    </p>
+
+    <h2>Creating The View</h2>
+    <p>
+      Now that you have the <b>part-a.js</b> file opened in a text editor, add the 
+      following code.
+    </p>
+    <div class="fig">
+      <pre><code class="prettyprint">'use strict';
+
+define([
+  'underscore',
+  'backbone'
+], function(_, Backbone){
+  // Create the home view class template
+  var HomeViewPartA = Backbone.View.extend({
+    el: '#view-content',
+
+    template: '&lt;p&gt;My First View Content!&lf;/p&gt;',
+
+    initialize: function(){
+      // since this view doesn't require any data fetched, render can be called right away
+      this.render();
+    },
+
+    render: function(){
+      // apply template
+      this.$el.html(this.template);
+
+      // return this for chaining
+      return this;
+    }
+  });
+
+  // return the created home view class template
+  return HomeViewPartA;
+});
+</code></pre>
+      <div class="fig-title">root/app/views/home/part-a.js</div>
+    </div>
+
+    <h3>View Elements</h3>
+    <h4>el</h4>
+    <p>
+      If you look at <b>index.html</b> in the root of the walkthrough directory, 
+      you will see a div element with an id attribute of <b>view-content</b>, 
+      so when the <strong>render()</strong> function is executed it will place the compiled 
+      html contents into that div.
+    </p>
+    <div class="fig">
+      <img src="images/backbone-tutorial-fig2_2b.jpg">
+      <div class="fig-title">Fig 2.2b (root/index.html)</div>
+    </div>
+
+    <h4>template</h4>
+    <p>This is the content that will be placed in the element selector.</p>
+
+    <h4>initialize</h4>
+    <p>
+      The initialize function is called automatically when you create a new 
+      instance of the view object.
+    </p>
+
+    <div class="fig">
+      <pre><code class="prettyprint">var homeView = new HomeViewPartA();
+// homeView.initialize() is called already
+</code></pre>
+      <div class="fig-title">Creating instance of HomeViewPartA</div>
+    </div>
+
+    <h4>render</h4>
+    <p>
+      Render is what lets the user see changes to the page.
+    </p>
+    <p>
+      Behind the scenes, Backbone automatically creates the <strong>$el</strong> property by 
+      using jQuery and selecting the element based on the el property, 
+      so in this case it finds the <b>#view-element</b> div we have in our 
+      <b>index.html</b> page, we then use the <strong>$el</strong> property to add html to it.
+    </p>
+    <p>
+      At the end of the render function, you will notice that we return <strong>this</strong>. 
+      It's common practice to return the instance back after render has been 
+      completed to allow chaining.
+    </p>
+    <p>
+      If you are not familiar with chaining below is an example of how 
+      you could work with it.
+    </p>
+    <div class="fig">
+      <pre><code class="prettyprint">var MyView = Backbone.View.extend({
+  el: '#view-content',
+
+  template: '&lt;p&gt;My First View Content!&lt;/p&gt;',
+
+  greet: function(){
+    this.$el.append('Hello');
+
+    return this;
+  },
+
+  render: function(){
+    this.$el.html(this.template);
+
+    return this;
+  }
+});
+
+var view = new MyView();
+
+// example of chaining
+// the template will be displayed in the element '#view-content'
+// and then "Hello" will be appended to the element
+view.render().greet();
+
+// same result would be
+view.render();
+view.greet();
+</code></pre>
+      <div class="fig-title">Chaining Example</div>
+    </div>
+    <p>
+      As you can see in the example above, it makes it so you can do the same 
+      chain of calls in one line instead of multiple lines. It may seem 
+      unessessary at first, however it will allow you to chain a lot of 
+      different commands together in one line, even <b>jQuery</b> utilizes the same 
+      idea with its objects.
+    </p>
+
+    <h2>Adding The View</h2>
+    <p>
+      Now that you have created the blueprint for the view, you will need to 
+      create an instance of it and apply it to the application. To do this, 
+      open up the <b>root/app/app.js</b> file and add the following.
+    </p>
+    <div class="fig">
+      <pre><code class="prettyprint">define([
+  'views/home/part-a'
+], function(HomeView){
+  var App = {
+    _curView: null,
+
+    initialize: function(){
+    // start the application with the HomeView
+      this._curView = new HomeView();
+    }
+  };
+
+  return App;
+});
+</code></pre>
+      <div class="fig-title">root/app/app.js</div>
+    </div>
+    <p>
+      Now with the app file updated, you can now see your view in action. 
+      Just open up <b>root/index.html</b> in your favoirate web browser, and 
+      it should show "My First View Content!" in the content area of the page. 
+      Feel free to go through part-a.js and update the template content and 
+      refresh the browser to see your view change before your eyes.
+    </p>
+    <div class="fig">
+      <img src="images/backbone-tutorial-fig2_2c.jpg">
+      <div class="fig-title">Fig 2.2c (root/index.html)</div>
+    </div>
+    <p><b>Congratulations!</b> You have created your very first Backbone view.</p>
+  </section>
+  <!-- End Section 2.2 - Basic View -->
+
+  <!-- Section 2.3 Passing Data to the View -->
+  <section id="2.3">
+    <header>
+      <h1>2.3 Passing Data to View</h1>
+    </header>
+    <p>
+      There are some cases where your views need to display data that is not 
+      static text like the previous example. For these cases we use a template 
+      engine, such as the one provided by <b>Underscore</b>.
+    </p>
+    <div class="fig">
+      <pre><code class="prettyprint">var MyView = Backbone.View.extend({
+  el: '#view-content',
+
+  template: '&lt;p&gt;Hello, my name is &lt;%= firstname %&gt;&lt;/p&gt;.',
+
+  render: function(){
+    var tpl = _.template(this.template);
+
+    this.$el.html(tpl({
+      firstname: 'Bob'
+    }));
+
+    return this;
+  }
+});
+</code></pre>
+      <div class="fig-title">Underscore Template Example</div>
+    </div>
+    <p>
+      Underscore will go through your template and check for the <strong>&lt;% %&gt;</strong> 
+      delimeters in your html and parse it. In this example, we are sending 
+      in firstname as a param to the template and using <strong>&lt;%= firstname %&gt;</strong> to have 
+      the template show the name variable. The tpl function will 
+      return <strong>'&lt;p&gt;Hello, my name is Bob.&lt;/p&gt;'</strong> and will the be 
+      applied as the html for the view's element.
+    </p>
+    <p>
+      Visit <a href="http://underscorejs.org/#template">underscorejs.org</a> 
+      for more details on Underscore's template engine and what you can do with it.
+    </p>
+    <p>
+      Now let's try out this idea in our application. 
+      Open <b>root/app/views/home/part-b.js</b>, and add the following code.
+    </p>
+    <div class="fig">
+      <pre><code class="prettyprint">'use strict';
+
+define([
+  'underscore',
+  'jquery',
+  'backbone'
+], function(_, $, Backbone){
+  var HomeViewPartB = Backbone.View.extend({
+    el: '#view-content',
+
+    // compile template using underscore template
+    template: _.template('&lt;p&gt;&lt;%= msg %&gt;&lt;/p&gt;'),
+
+    initialize: function(){
+      // since this view doesn't require any data fetched, render can be called right away
+      this.render();
+    },
+
+    render: function(){      
+      // apply the compiled html template to this view's jquery element
+      this.$el.html(this.template({
+        msg: 'Message from the msg property!'
+      }));
+
+      // return this for chaining
+      return this;
+    }
+  });
+
+  // return the created view
+  return HomeViewPartB;
+});
+</code></pre>
+      <div class="fig-title">root/app/views/home/part-b.js</div>
+    </div>
+    <p>
+      In this example, we applied the Underscore's template function directly 
+      to the template property of the view. We do this for a couple reasons.
+      It reduces the amount of lines of code in our render method, and most 
+      importantly it increases performance in our app since the template 
+      doesn't have to go through the template function each time render is 
+      executed. We only need to create the template function once for it to 
+      work for our render, so there is no reason to have render keep executing 
+      the underscore template method.
+    </p>
+    <p>
+      With part-b completed, now all we have to do is update our app to use 
+      this home view instead of part-a. If you haven't already, open 
+      <b>root/app/app.js</b> in your favorite text editor, and just change the define 
+      for <b>views/home/part-a</b> to <b>views/home/part-b</b> like shown below.
+    </p>
+    <div class="fig">
+      <pre><code class="prettyprint">'use strict';
+
+define([
+  <strong>'views/home/part-b'</strong>
+], function(HomeView){
+  var App = {
+    _curView: null,
+
+    initialize: function(){
+      // start the application with the HomeView
+      this._curView = new HomeView();
+    }
+  };
+
+  return App;
+});
+</code></pre>
+      <div class="fig-title">root/app/app.js</div>
+    </div>
+
+    <h2>Refresh index.html in Browser</h2>
+    <p>
+      Now all thats left is to refresh your index.html page in your web browser to 
+      see your changes.
+    </p>
+    <p>
+      You have now successfully sent data to your views. 
+      Go ahead and change the msg property to whatever you want and see the results. 
+    </p>
+
+    <h2>Exercise</h2>
+    <p>
+      For a small exercise, add a username property to the template, 
+      and update your template to display that username property in a 
+      paragraph tag.
+    </p>
+  </section>
+  <!-- End Section 2.3 - Passing Data to the View -->
+
+  <!-- Section 2.4 Using Templates Outside of View File -->
+  <section id="2.4">
+    <header>
+      <h1>2.4 Using Templates Outside of View File</h1>
+    </header>
+    <p>
+      So far all of our view templates have been comprised of small html content, 
+      however as the size of our views increase, it becomes tedious to add all 
+      of our content in the template property in our view.
+    </p>
+    <p>
+      One solution is to seperate your html templates in your index.html file. 
+      If you looked at the index.html file in the getting started section, you may have noticed some comments 
+      pointing out a section saying <b>Templates</b>, we will now utilize that section of our file now.
+    </p>
+    <p>
+      Open up <b>root/index.html</b> in your favorite text editor and locate the script tag with an id attribute 
+      named <b>tplHomePartC</b>, this is where you will be adding your html template for the HomeViewPartC view.
+    </p>
+    <div class="fig">
+      <img src="images/backbone-tutorial-fig2_4a.jpg">
+      <div class="fig-title">Fig 2.4a</div>
+    </div>
+    <div class="disclaimer">
+      <small>
+        <b>Note</b>
+        <p>
+          You may have noticed that the script tag has a type of <b>text/template</b>, 
+          this is to prevent index.html page from rendering the html, and have 
+          it not be considered JavaScript as well. For the tags to not be 
+          rendered it doesn't have to be <b>text/template</b>, the template part 
+          is just made up, it can be whatever, for example it could be 
+          <b>type="text/randomname"</b>, and it would still work, however my 
+          personal preference is to name them <b>text/template</b>, since that's 
+          really what it's being used for.
+        </p>
+      </small>
+    </div>
+    <p>
+      Now with the script tag <b>tplHomePartC</b> located, add the html 
+      shown in Fig 2.4b.
+    </p>
+    <div class="fig">
+      <img src="images/backbone-tutorial-fig2_4b.jpg">
+      <div class="fig-title">Fig 2.4b</div>
+    </div>
+    <p>
+      Now that we have our html template built out, open 
+      <b>root/app/views/home/part-c.js</b>, and add the code below.
+    </p>
+    <div class="fig">
+      <pre><code class="prettyprint">'use strict';
+
+define([
+  'underscore',
+  'jquery',
+  'backbone'
+], function(_, $, Backbone){
+  var HomeViewPartC = Backbone.View.extend({
+    el: '#view-content',
+
+    // compile template using underscore template
+    template: _.template($('#tplHomePartC').html()),
+
+    initialize: function(){
+      // since this view doesn't require any data fetched, render can be called right away
+      this.render();
+    },
+
+    render: function(){      
+      // apply the compiled html template to this view's jquery element
+      this.$el.html(this.template({
+        msg: 'Message from an html template inside index.html'
+      }));
+
+      // return this for chaining
+      return this;
+    }
+  });
+
+  // return the created view
+  return HomeViewPartC;
+});
+</code></pre>
+      <div class="fig-title">root/app/views/home/part-c.js</div>
+    </div>
+    <p>
+      As you can probably tell, <b>HomeViewPartC</b> looks almost like <b>HomeViewPartB</b>, 
+      however with one main change. We are now using <b>jQuery</b> to fetch our 
+      template's html contents using the id we gave our script tag block 
+      <b>$('#tplHomePartC').html()</b>.
+    </p>
+    <p>
+      Like our previous views, let's update our <b>root/app.js</b> file to use 
+      <b>HomeViewPartC</b> by changing the definition for our HomeView from 
+      <b>'views/home/part-b'</b> to <b>'views/home/part-c'</b>.
+    </p>
+
+    <h2>Refresh index.html in Browser</h2>
+    <p>
+      You may now refresh your <b>index.html</b> page in your browser and should be 
+      able to see your changes.
+    </p>
+    <div class="fig">
+      <img src="images/backbone-tutorial-fig2_4c.jpg">
+      <div class="fig-title">Fig 2.4c</div>
+    </div>
+
+    <div class="disclaimer">
+      <b>Note</b>
+      <p>
+        There are a few other options for separating your templates, such as 
+        in there own html files by using <b>RequireJS</b> and its text plugin, however 
+        that is out of scope for this tutorial, but you can visit 
+        <a href="https://github.com/requirejs/text">https://github.com/requirejs/text</a> 
+        for more details.
+      </p>
+    </div>
+  </section>
+  <!-- End Section 2.4 Using Templates Outside of View File -->
+
+  <!-- Section 2.5 View Summary -->
+  <section id="2.5">
+    <header>
+      <h1>2.5 View Summary</h1>
+    </header>
+    <p>
+      You now have a basic grasp of views, however there are still lots of 
+      features to explore, such as dealing with Backbone Models, events, and 
+      subviews. We will discuss those in the next few sections.
+    </p>
+  </section>
+  <!-- End Section 2.5 View Summary -->
+
+  <div class="text-center">
+    <a href="backbone-tutorial-part-3.html" class="btn btn-primary">Continue to Part 3!</a>
+  </div>
+</div>
+<!-- End Article Container -->
