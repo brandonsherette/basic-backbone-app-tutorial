@@ -1,0 +1,196 @@
+<div>
+  <!-- Introduction -->
+  <section>
+    <header>
+      <h1>Introduction</h1>
+    </header>
+    <p>
+      While building out a web application, it may seem easier to build out 
+      interactions with simple <b>jQuery</b> selectors and events, however as your 
+      application grows, it can get tedious to work with. One solution is to use 
+      a JavaScript framework to help separate and alleviate some of the common 
+      tasks into a more manageable model and view structure. One such framework 
+      is <a href="http://backbonejs.org/"><b>Backbone</b></a>.
+    </p>
+    <p>
+      <b>Backbone</b> is a more or less a more simple framework that allows you 
+      quickly build out a web application using its many pre-built feature sets 
+      such as, routing, models, and views.
+    </p>
+  </section>
+  <!-- End Introduction -->
+
+  <!-- Tutorial Goals -->
+  <section>
+    <header>
+      <h1>Tutorial Goals</h1>
+    </header>
+    <ul>
+      <li>Install essential components.</li>
+      <li>Build a simple web app using the Backbone.js Framework.</li>
+      <li>Basic understanding of the following:</li>
+      <ul>
+        <li>Views</li>
+        <li>Models</li>
+        <li>Routing</li>
+      </ul>
+    </ul>
+    <p>
+      Throughout this tutorial you will not only learn how to work with the <b>Backbone.js Framework</b>, 
+      but also show you how to use <b>Backbone</b> in a small and simple application.
+      While you continue to develop this simplistic Product Manager Application, 
+      you will see how all the pieces fit together as a semi-finished product by 
+      showing you one of my app/file structures I like to use, and utilize 
+      <b>RequireJS</b> to modularize your application code.
+    </p>
+    <p>
+      This particular tutorial is separated into four different parts.
+    </p>
+
+    <h2><a href="backbone-tutorial-part-1.html">Part 1</a></h2>
+    <p>
+      Part 1 is the current page you are on, and will discuss installing the required files 
+      and going over the <b>app/file structure</b>.
+    </p>
+
+    <h2><a href="backbone-tutorial-part-2.html">Part 2</a></h2>
+    <p>
+      Part 2 deals with teaching some of the basics of <b>Backbone Views</b> and 
+      some of its various ways of working with them and their respected html 
+      templates.
+    </p>
+
+    <h2><a href="backbone-tutorial-part-3.html">Part 3</a></h2>
+    <p>
+      Part 3 deals with the introduction of <b>Backbone Models and Collections</b> while 
+      also continuing to show different aspects of views. We will have our views 
+      render with Product Models and end with dealing with looping through a collection 
+      of products and rendering them to the user.
+    </p>
+
+    <h2><a href="backbone-tutorial-part-4.html">Part 4</a></h2>
+    <p>
+      Finally, we end with part 4 which deals with the introduction to <b>Backbone Routers</b>, 
+      and flesh out the rest of the application with adding/editing/deleting 
+      products.
+    </p>
+
+    <h1>Getting Started</h1>
+    <p>Before we start, we will need to download and setup a few things.</p>
+  </section>
+  <!-- End Tutorial Goals -->
+
+  <!-- 1.1 Installation -->
+  <section>
+    <header>
+      <h1>1.1 Installation</h1>
+    </header>
+
+    <p>
+      I have a pre-built basic website built out and the required 
+      files available for you to download at 
+      <a href="github.com">www.github.com (update url).</a>
+    </p>
+    <p>
+      Once downloaded, go ahead and take a quick look at take a look at the 
+      contents of the directory. You will notice there are several folders 
+      with the <b>backbone-tutorial</b> prefix. The <b>end</b> version is the completed 
+      application from Parts 2, 3, and 4 of the tutorial, so if you are a more 
+      of a tinkerer learner, go ahead and go through that folder and see the end
+      results. The <b>start</b> version, is a clean starting copy that you will have 
+      all the essential elements in place to start the tutorial. Finally, the 
+      <b>walkthrough</b> version is the one you will actually go through the tutorial 
+      with.
+    </p>
+    <div class="fig">
+      <img src="images/backbone-tutorial-fig1_1a.jpg">
+      <div class="fig-title">Fig 1.1a</div>
+    </div>
+  </section>
+  <!-- End 1.1 Installation -->
+
+  <section id="1.2">
+    <header>
+      <h1>1.2 App/File Structure</h1>
+    </header>
+
+    <p>
+      Backbone doesn't really have a required file structure, you could in 
+      fact have all your code in one JavaScript file, however I will be going 
+      over one of the ways I like to structure my Backbone Applications, 
+      which in turn, will help give you an idea how you can structure your own apps.
+    </p>
+    <p>
+      Let's first open up the <b>backbone-tutorial-walkthrough</b>, known from now on as the <b>root</b> directory, and 
+      checkout what we have.
+    </p>
+    <div class="fig">
+      <img src="images/backbone-tutorial-fig1_2a.jpg">
+      <div class="fig-title">Fig 1.2 (root)</div>
+    </div>
+
+    <h2>File Structure Descriptions</h2>
+    <dl>
+      <dt>root/app</dt>
+      <dd>The folder containing all application code, such as JavaScript and vendor files/libraries.</dd>
+      <dt>root/styles</dt>
+      <dd>Where your CSS, LESS, Font, or any other styles that the application uses. Unless you want to change any styles in the application, 
+        you will not need to go into this directory since I have already added some styling to get you started.</dd>
+      <dt>root/index.html</dt>
+      <dd>
+        Open this file in browser to open the application. There is no need to have multiple html pages, 
+        since this is a Single Page Application (SPA).
+        In this particular tutorial, this is where you will add your html view templates at.
+      </dd>
+    </dl>
+
+    <h2>App Directory</h2>
+    <p>Now lets open the app directory and see the structure in there.</p>
+    <div class="fig">
+      <img src="images/backbone-tutorial-fig1_2b.jpg">
+      <div class="fig-title">Fig 1.3 (root/app)</div>
+    </div>
+    <dl>
+      <dt>root/app/collections</dt>
+      <dd>Stores the appliaction's Collection Classes.</dd>
+      <dt>root/app/models</dt>
+      <dd>Stores the application's Model Classes.</dd>
+      <dt>root/app/services</dt>
+      <dd>Stores the application's Service Classes.</dd>
+      <dt>root/app/vendor</dt>
+      <dd>Stores all 3rd party files, such as Backbone, Bootstrap, Underscore, and etc...</dd>
+      <dt>root/app/views</dt>
+      <dd>Stores the application's views.</dd>
+      <dt>root/app/app.js</dt>
+      <dd>Binds and configures tasks for the application, before actually starting the application.</dd>
+      <dt>root/app/exe.js</dt>
+      <dd>
+        Waits for the document to be ready and/or device ready if the 
+        application is for a Cordova Project, before running the application 
+        (app.js).
+      </dd>
+      <dt>root/app/require-config.js</dt>
+      <dd>
+        Configuration file for RequireJS. Requirejs isn't required for a 
+        Backbone Application, however I like to use it for my applications. 
+        If you want to know more about RequireJS, I will eventually have an 
+        article dissucssing it in more detail, but you can learn more at 
+        <a href="http://requirejs.org/">http://requirejs.org/</a>.
+      </dd>
+      <dt>root/app/router.js</dt>
+      <dd>Configures the application router's page states.</dd>
+    </dl>
+    <footer>
+      You can take a look at any files you wish to kind of get a better 
+      understanding, some of the files I have already coded for you, such as 
+      the <b>require-config</b> file, so you can concentrate on just Backone 
+      related programming. Once you are finished, go ahead and continue to 
+      the next section and learn about Backbone Views.
+    </footer>
+  </section>
+  <!-- End Getting Started -->
+
+  <div class="text-center">
+    <a href="backbone-tutorial-part-2.html" class="btn btn-primary">Continue to Part 2!</a>
+  </div>
+</div>
